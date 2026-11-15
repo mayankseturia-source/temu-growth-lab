@@ -56,13 +56,13 @@ with st.sidebar:
     traffic = st.slider("Shopper traffic", 0.5, 3.0, 1.0, 0.25)
     st.caption("Inject an incident and watch the live tab react:")
     inc = None
-    if st.button("🛍️ Mega-sale traffic spike", use_container_width=True, help="x3 traffic for ~12 ticks"):
+    if st.button("🛍️ Mega-sale traffic spike", width="stretch", help="x3 traffic for ~12 ticks"):
         inc = "spike"
-    if st.button("🚚 Delivery delay storm", use_container_width=True, help="carrier backlog in GCC + EU, angry reviews"):
+    if st.button("🚚 Delivery delay storm", width="stretch", help="carrier backlog in GCC + EU, angry reviews"):
         inc = "delay"
-    if st.button("📣 Notification blast", use_container_width=True, help="every user gets 6 more pushes a day: sleeping dogs wake up"):
+    if st.button("📣 Notification blast", width="stretch", help="every user gets 6 more pushes a day: sleeping dogs wake up"):
         inc = "blast"
-    if st.button("🔄 Restart simulation", use_container_width=True):
+    if st.button("🔄 Restart simulation", width="stretch"):
         st.session_state.pop("sim", None)
     st.divider()
     st.markdown("### 🧮 Problem 1 assumptions")
@@ -146,7 +146,7 @@ def live_tab():
         f1 = px.line(cv, x="tick", y=["Smart targeting", "Blanket 20% off"],
                      color_discrete_map=ui.POLICY_COLOR, labels={"value": "USD per shopper", "variable": ""})
         f1.update_traces(line_width=2.5)
-        a.plotly_chart(fig_style(f1, 300, "Running value per shopper (profit + CLV of won customers)"), use_container_width=True)
+        a.plotly_chart(fig_style(f1, 300, "Running value per shopper (profit + CLV of won customers)"), width="stretch")
         roll = T[["tick"]].copy()
         for g in ("smart", "blanket"):
             roll[g] = T[f"{g}_cost"].rolling(10, min_periods=1).sum() / T[f"{g}_rev"].rolling(10, min_periods=1).sum() * 100
@@ -155,7 +155,7 @@ def live_tab():
                      labels={"value": "% of sales", "variable": ""})
         f2.add_hline(y=10, line_dash="dot", line_color=GOOD, annotation_text="target 10%", annotation_font_color=GOOD)
         f2.update_traces(line_width=2.5)
-        b.plotly_chart(fig_style(f2, 300, "Promo cost as % of sales (rolling 10 ticks)"), use_container_width=True)
+        b.plotly_chart(fig_style(f2, 300, "Promo cost as % of sales (rolling 10 ticks)"), width="stretch")
 
         a, b, c = st.columns([1.1, 1.1, 1.4])
         sm = V[V["group"] == "Smart targeting"]
@@ -163,19 +163,19 @@ def live_tab():
         mix.columns = ["offer", "shoppers"]
         f3 = px.bar(mix, x="shoppers", y="offer", orientation="h", color="offer", color_discrete_map=ARM_COLOR, text="shoppers")
         f3.update_layout(showlegend=False, yaxis_title="", xaxis_title="shoppers (last 60 ticks)")
-        a.plotly_chart(fig_style(f3, 280, "What smart targeting sends"), use_container_width=True)
+        a.plotly_chart(fig_style(f3, 280, "What smart targeting sends"), width="stretch")
         sg = V["segment"].value_counts().reindex(list(SEG_COLOR), fill_value=0).reset_index()
         sg.columns = ["segment", "shoppers"]
         f4 = px.bar(sg, x="shoppers", y="segment", orientation="h", color="segment", color_discrete_map=SEG_COLOR, text="shoppers")
         f4.update_layout(showlegend=False, yaxis_title="", xaxis_title="shoppers (last 60 ticks)")
-        b.plotly_chart(fig_style(f4, 280, "Predicted segment of arriving shoppers"), use_container_width=True)
+        b.plotly_chart(fig_style(f4, 280, "Predicted segment of arriving shoppers"), width="stretch")
         from src.live import WH
         cov = pd.DataFrame({"warehouse": WH, "cover": [T[f"cover_{w}"].iloc[-1] for w in WH]})
         cov["status"] = np.where(cov["cover"] < 1.5, "Critical", np.where(cov["cover"] < 3, "Watch", "Healthy"))
         f5 = px.bar(cov, x="cover", y="warehouse", orientation="h", color="status", text=cov["cover"].round(1),
                     color_discrete_map={"Critical": CRIT, "Watch": WARN, "Healthy": GOOD})
         f5.update_layout(yaxis_title="", xaxis_title="ticks of demand covered by stock on hand", legend_title="")
-        c.plotly_chart(fig_style(f5, 280, "Warehouse stock cover (forecast + safety stock)"), use_container_width=True)
+        c.plotly_chart(fig_style(f5, 280, "Warehouse stock cover (forecast + safety stock)"), width="stretch")
 
         a, b, c = st.columns([1.5, 1.25, 1])
         a.markdown("**🧠 Live decision stream** · latest shoppers on smart targeting")
@@ -184,7 +184,7 @@ def live_tab():
         ds["uplift"] = (ds["uplift"] * 100).round(1).map(lambda v: f"{v:+.1f} pp")
         ds["converted"] = ds["converted"].map({1: "✅", 0: "·"})
         a.dataframe(ds.rename(columns={"p_no_offer": "buy w/o offer", "uplift": "uplift (20% off)", "converted": "bought"}),
-                    hide_index=True, use_container_width=True, height=360)
+                    hide_index=True, width="stretch", height=360)
         b.markdown("**💬 Review stream** · noisy, multilingual, some spam")
         html = ""
         for _, r in rv.head(7).iterrows():
@@ -201,7 +201,7 @@ def live_tab():
 
         stock = T[["tick"] + [f"stock_{w}" for w in WH]].rename(columns=lambda x: x.replace("stock_", ""))
         f6 = px.area(stock.tail(120), x="tick", y=WH, labels={"value": "units on hand", "variable": ""})
-        st.plotly_chart(fig_style(f6, 260, "Stock on hand by warehouse"), use_container_width=True)
+        st.plotly_chart(fig_style(f6, 260, "Stock on hand by warehouse"), width="stretch")
 
     body()
 
@@ -239,7 +239,7 @@ with tabs[1]:
     fig.add_scatter(y=imp["KPI"], x=imp["Target (MoM)"], mode="markers", name="Target in the Minutes of Meeting",
                     marker=dict(symbol="diamond", size=14, color=YELLOW, line=dict(color="white", width=1)))
     fig.update_layout(barmode="group", xaxis_title="%")
-    st.plotly_chart(fig_style(fig, 330, "Before vs predicted after (vs the targets the group set)"), use_container_width=True)
+    st.plotly_chart(fig_style(fig, 330, "Before vs predicted after (vs the targets the group set)"), width="stretch")
 
     c1, c2, c3 = st.columns(3)
     with c1:
@@ -304,20 +304,20 @@ with tabs[2]:
     f = go.Figure()
     f.add_bar(x=m["month"], y=m["revenue"], name="Net revenue", marker_color=BLUE)
     f.update_layout(yaxis_title="USD")
-    a.plotly_chart(fig_style(f, 320, "Monthly net revenue"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 320, "Monthly net revenue"), width="stretch")
     f = go.Figure()
     f.add_bar(x=m["month"], y=m["new_customers"], name="New customers", marker_color=ORANGE)
     f.add_bar(x=m["month"], y=m["existing_customers"], name="Existing customers", marker_color=AQUA)
     f.update_layout(barmode="stack", yaxis_title="active customers")
-    b.plotly_chart(fig_style(f, 320, "Active customers: new vs existing"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 320, "Active customers: new vs existing"), width="stretch")
     a, b = st.columns(2)
     f = px.line(m, x="month", y="repeat_buyers", markers=True)
     f.update_traces(line_color=GREEN, line_width=3)
-    a.plotly_chart(fig_style(f, 300, "North Star metric: monthly repeat buyers"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 300, "North Star metric: monthly repeat buyers"), width="stretch")
     f = px.line(m.dropna(subset=["retention_rate_pct"]), x="month", y="retention_rate_pct", markers=True)
     f.update_traces(line_color=VIOLET, line_width=3)
     f.update_layout(yaxis_title="%")
-    b.plotly_chart(fig_style(f, 300, "Monthly retention rate"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 300, "Monthly retention rate"), width="stretch")
     a, b = st.columns([1.4, 1])
     coh = A["b1_cohort"].set_index("cohort")
     last_p = pd.Period(m["month"].iloc[-1], "M")
@@ -327,13 +327,13 @@ with tabs[2]:
     f = px.imshow(cv_, x=[f"M{c}" for c in coh.columns], y=coh.index, color_continuous_scale=ui.SEQ_BLUE,
                   aspect="auto", labels=dict(color="% active"), text_auto=".0f")
     f.update_traces(textfont_size=9)
-    a.plotly_chart(fig_style(f, 520, "Cohort retention: % of each first-order cohort active k months later"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 520, "Cohort retention: % of each first-order cohort active k months later"), width="stretch")
     r9 = A["b1_repeat90_by_cohort"]
     f = px.bar(r9, x="cohort", y="repeat90", color_discrete_sequence=[MAGENTA])
     f.add_hline(y=R["blog1"]["repeat90_pct"], line_dash="dot", line_color="white",
                 annotation_text=f"avg {R['blog1']['repeat90_pct']:.1f}%")
     f.update_layout(yaxis_title="% placing a 2nd order within 90 days")
-    b.plotly_chart(fig_style(f, 520, "90-day repeat rate of new buyers (the Problem 1 KPI)"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 520, "90-day repeat rate of new buyers (the Problem 1 KPI)"), width="stretch")
 
 # ============================================================ PROBLEM 1
 with tabs[3]:
@@ -347,20 +347,20 @@ with tabs[3]:
     f = go.Figure()
     f.add_scatter(x=el["k"], y=el["inertia"], mode="lines+markers", name="Inertia (elbow)", line=dict(color=BLUE, width=3))
     f.update_layout(xaxis_title="k clusters", yaxis_title="inertia")
-    a.plotly_chart(fig_style(f, 300, "Elbow method: choosing k"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 300, "Elbow method: choosing k"), width="stretch")
     sg = A["b2_segments"].set_index("segment").loc[["Low value", "Mid value", "High value"]].reset_index()
     f = go.Figure()
     f.add_bar(x=sg["segment"], y=sg["share_customers_pct"], name="% of customers", marker_color="#8a8aa3")
     f.add_bar(x=sg["segment"], y=sg["share_revenue_pct"], name="% of revenue", marker_color=ORANGE)
     f.update_layout(barmode="group", yaxis_title="%")
-    b.plotly_chart(fig_style(f, 300, "Segments: share of customers vs revenue"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 300, "Segments: share of customers vs revenue"), width="stretch")
     rfm = A["b2_rfm"].sample(3000, random_state=1)
     f = px.scatter_3d(rfm, x="recency", y="frequency", z="monetary", color="segment", opacity=0.7,
                       color_discrete_map={"Low value": "#8a8aa3", "Mid value": BLUE, "High value": ORANGE})
     f.update_traces(marker_size=3)
     f.update_layout(scene=dict(bgcolor="rgba(0,0,0,0)"), legend_title="")
-    c.plotly_chart(fig_style(f, 300, "RFM space (3,000 customers)"), use_container_width=True)
-    st.dataframe(sg.round(1), hide_index=True, use_container_width=True)
+    c.plotly_chart(fig_style(f, 300, "RFM space (3,000 customers)"), width="stretch")
+    st.dataframe(sg.round(1), hide_index=True, width="stretch")
 
     st.markdown("### ② Customer lifetime value")
     b3 = R["blog3"]
@@ -371,7 +371,7 @@ with tabs[3]:
                color_discrete_map={"pays back": GOOD, "loses money": RED})
     f.add_vline(x=1, line_dash="dot", line_color="white", annotation_text="break-even")
     f.update_layout(xaxis_title="12-month contribution ÷ acquisition cost", yaxis_title="", legend_title="")
-    a.plotly_chart(fig_style(f, 330, "LTV : CAC by acquisition channel"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 330, "LTV : CAC by acquisition channel"), width="stretch")
     m3 = b3["metrics"]
     with b:
         k = st.columns(2)
@@ -379,7 +379,7 @@ with tabs[3]:
         kpi(k[1], "Macro F1", f"{m3['f1_macro']:.2f}", f"majority-class baseline {m3['majority_baseline_f1_macro']:.2f}", "g3")
         bands = A["b3_bands"]
         st.dataframe(bands[["name", "count", "min", "mean", "max"]].rename(columns={"name": "class", "count": "customers",
-                     "min": "min $", "mean": "avg $", "max": "max $"}).round(1), hide_index=True, use_container_width=True)
+                     "min": "min $", "mean": "avg $", "max": "max $"}).round(1), hide_index=True, width="stretch")
         st.caption(f"Accuracy {m3['accuracy']:.2f} · balanced accuracy {m3['balanced_accuracy']:.2f} "
                    f"(baseline {m3['majority_baseline_balanced_accuracy']:.2f}). Features: the blog's 3-month RFM plus full purchase history.")
 
@@ -398,14 +398,14 @@ with tabs[3]:
     f.add_bar(x=dec["decile"], y=dec["actual"] * 100, name="actual churn", marker_color=RED)
     f.add_scatter(x=dec["decile"], y=dec["predicted"] * 100, name="predicted", mode="lines+markers", line=dict(color=YELLOW, width=3))
     f.update_layout(xaxis_title="risk decile (1 = safest)", yaxis_title="% churn")
-    a.plotly_chart(fig_style(f, 320, "Predicted vs actual churn by risk decile"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 320, "Predicted vs actual churn by risk decile"), width="stretch")
     im = pd.DataFrame(b4["importance"]).iloc[::-1]
     f = px.bar(im, x="importance", y="feature", orientation="h", color_discrete_sequence=[VIOLET])
-    b.plotly_chart(fig_style(f, 320, "What drives churn (feature importance)"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 320, "What drives churn (feature importance)"), width="stretch")
     cm = np.array(b4["confusion"])
     f = px.imshow(cm, x=["pred: stays", "pred: churns"], y=["stays", "churns"], text_auto=True, color_continuous_scale=ui.SEQ_BLUE)
     f.update_layout(coloraxis_showscale=False)
-    c.plotly_chart(fig_style(f, 320, "Confusion matrix (test set)"), use_container_width=True)
+    c.plotly_chart(fig_style(f, 320, "Confusion matrix (test set)"), width="stretch")
 
     st.markdown("### ④ Next purchase day")
     b5 = R["blog5"]
@@ -419,11 +419,11 @@ with tabs[3]:
         cd.columns = ["class", "customers"]
         f = px.bar(cd, x="class", y="customers", color="class", color_discrete_sequence=[RED, YELLOW, GREEN])
         f.update_layout(showlegend=False)
-        st.plotly_chart(fig_style(f, 250, "When do customers with 3+ orders buy next?"), use_container_width=True)
+        st.plotly_chart(fig_style(f, 250, "When do customers with 3+ orders buy next?"), width="stretch")
     cm = np.array(b5["confusion"])
     f = px.imshow(cm, x=[f"pred {l}" for l in b5["labels"]], y=b5["labels"], text_auto=True, color_continuous_scale=ui.SEQ_BLUE)
     f.update_layout(coloraxis_showscale=False)
-    b.plotly_chart(fig_style(f, 380, "Confusion matrix · next purchase day class"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 380, "Confusion matrix · next purchase day class"), width="stretch")
 
     st.markdown("### ⑤ Retention plan and its predicted impact")
     seg_sh = P1["segment_shares"]
@@ -436,7 +436,7 @@ with tabs[3]:
     ])
     plan["share"] = (plan["share"] * 100).round(1)
     a, b = st.columns([1.5, 1])
-    a.dataframe(plan.rename(columns={"share": "% of customers", "effect_pp": "assumed uplift (pp)"}), hide_index=True, use_container_width=True)
+    a.dataframe(plan.rename(columns={"share": "% of customers", "effect_pp": "assumed uplift (pp)"}), hide_index=True, width="stretch")
     a.latex(r"\text{Repeat}_{90}^{new}= \text{Repeat}_{90}^{today} + \text{precision}\times\sum_s \text{share}_s \times \text{uplift}_s")
     a.caption(f"Targeting precision = churn model precision ({P1['targeting_precision']:.2f}). Uplift values are "
               "assumptions; change them in the sidebar.")
@@ -446,7 +446,7 @@ with tabs[3]:
                                gauge={"axis": {"range": [0, 70]}, "bar": {"color": AQUA},
                                       "steps": [{"range": [0, P1["baseline_repeat90"]], "color": "#2a2f52"}],
                                       "threshold": {"line": {"color": YELLOW, "width": 4}, "value": 50}}))
-    b.plotly_chart(fig_style(f, 280, "Projected 90-day repeat rate (yellow = 50% target)"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 280, "Projected 90-day repeat rate (yellow = 50% target)"), width="stretch")
     ab = P1["ab_test"]
     finding(f"<b>A/B test design (Blog 9):</b> 10% of new buyers get the plan for 4 weeks ({ab['n_test']:,} test vs "
             f"{ab['n_control']:,} control). In simulation the repeat rate moves from {ab['p_control']:.1%} to {ab['p_test']:.1%} "
@@ -468,14 +468,14 @@ with tabs[4]:
     base = mr.loc[mr["offer"] == "No offer", "conversion_rate"].iloc[0] * 100
     f.add_hline(y=base, line_dash="dot", line_color="white", annotation_text="would buy anyway")
     f.update_layout(yaxis_title="conversion %")
-    a.plotly_chart(fig_style(f, 330, "Conversion by offer: the grey line is the sales we'd get for free"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 330, "Conversion by offer: the grey line is the sales we'd get for free"), width="stretch")
     t = mr[mr["offer"] != "No offer"][["offer", "conversion_uplift_pp", "incremental_share_of_orders", "order_uplift_per_100k",
                                       "revenue_uplift_per_100k", "promo_cost_per_user", "incremental_profit_per_user", "p_value"]].copy()
     t["incremental_share_of_orders"] = (t["incremental_share_of_orders"] * 100).round(1)
     b.dataframe(t.rename(columns={"conversion_uplift_pp": "uplift (pp)", "incremental_share_of_orders": "% orders truly extra",
                                   "order_uplift_per_100k": "extra orders / 100k", "revenue_uplift_per_100k": "extra revenue / 100k",
                                   "promo_cost_per_user": "promo $/user", "incremental_profit_per_user": "Δ profit $/user"}).round(3),
-                hide_index=True, use_container_width=True)
+                hide_index=True, width="stretch")
     pct20 = mr.set_index("offer").loc["20% off", "incremental_share_of_orders"]
     b.markdown(f'<div class="finding bad">Only <b>{pct20:.0%}</b> of 20%-off orders are truly extra. The rest are '
                f'customers who would have bought anyway. Every blanket offer loses short-term profit.</div>', unsafe_allow_html=True)
@@ -485,7 +485,7 @@ with tabs[4]:
     h = by[by["dimension"] == dim].pivot(index="group", columns="offer", values="uplift_pp")
     f = px.imshow(h.values, x=h.columns, y=h.index, text_auto=".1f", color_continuous_scale=ui.DIVERGING,
                   color_continuous_midpoint=0, aspect="auto", labels=dict(color="uplift pp"))
-    st.plotly_chart(fig_style(f, 300, "Conversion uplift (pp) by group and offer"), use_container_width=True)
+    st.plotly_chart(fig_style(f, 300, "Conversion uplift (pp) by group and offer"), width="stretch")
 
     st.markdown("### ② Uplift modelling: who should get a coupon?")
     b8 = R["blog8"]
@@ -503,16 +503,16 @@ with tabs[4]:
                 color_discrete_map={"class transformation (Blog 8)": VIOLET, "T-learner (per-offer models)": AQUA, "Random targeting": "#8a8aa3"},
                 labels={"share": "share of users targeted (ranked by score)", "y": "extra conversions per 100 users"})
     f.update_layout(legend_title="", yaxis_title="extra conversions per 100 users")
-    a.plotly_chart(fig_style(f, 340, "Uplift curve: targeting the top first"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 340, "Uplift curve: targeting the top first"), width="stretch")
     ts = A["b8_test_scores"].sample(6000, random_state=2)
     f = px.histogram(ts, x="uplift_t_learner", color="_segment", nbins=60, color_discrete_map=SEG_COLOR,
                      labels={"uplift_t_learner": "predicted uplift of 20% off", "_segment": "true segment"}, barmode="overlay", opacity=0.75)
     f.update_layout(legend_title="")
-    b.plotly_chart(fig_style(f, 340, "Predicted uplift, coloured by true segment"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 340, "Predicted uplift, coloured by true segment"), width="stretch")
     segs = ["Persuadable", "Sure thing", "Lost cause", "Sleeping dog"]
     f = px.imshow(np.array(b8["segment_confusion"]), x=[f"pred {s}" for s in segs], y=segs, text_auto=True, color_continuous_scale=ui.SEQ_BLUE)
     f.update_layout(coloraxis_showscale=False)
-    c.plotly_chart(fig_style(f, 340, "True vs predicted segment (test users)"), use_container_width=True)
+    c.plotly_chart(fig_style(f, 340, "True vs predicted segment (test users)"), width="stretch")
     st.markdown("""
 | Segment | Behaviour | Action |
 |---|---|---|
@@ -538,13 +538,13 @@ with tabs[4]:
     f.update_traces(textposition="auto", textfont_size=11)
     f.add_vline(x=0, line_color="white", line_width=1)
     f.update_layout(showlegend=False)
-    a.plotly_chart(fig_style(f, 430, "Which coupon policy creates value? (teal = recommended, orange = today)"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 430, "Which coupon policy creates value? (teal = recommended, orange = today)"), width="stretch")
     show = pol[["policy", "users_contacted_pct", "orders", "promo_cost_pct_sales", "profit", "incremental_value_incl_clv",
                 "incr_revenue_per_coupon_dollar"]].round(1)
     b.dataframe(show.rename(columns={"users_contacted_pct": "% contacted", "orders": "orders/100k", "promo_cost_pct_sales": "promo % sales",
                                      "profit": "profit/100k $", "incremental_value_incl_clv": "Δ value incl CLV $",
                                      "incr_revenue_per_coupon_dollar": "extra $ per coupon $"}),
-                hide_index=True, use_container_width=True, height=360)
+                hide_index=True, width="stretch", height=360)
     gc = A["b8_guardrail_curve"]
     a, b = st.columns(2)
     f = go.Figure()
@@ -552,12 +552,12 @@ with tabs[4]:
     f.add_scatter(x=gc["lambda_usd_per_order"], y=gc["promo_pct_sales"], name="promo % of sales", line=dict(color=ORANGE, width=3))
     f.add_vline(x=P2.get("guardrail_lambda_usd_per_order", 0), line_dash="dot", line_color="white", annotation_text="chosen λ")
     f.update_layout(xaxis_title="λ: value given to one extra order (USD)", yaxis_title="%")
-    a.plotly_chart(fig_style(f, 320, "Order guardrail: trading coupon cost for orders"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 320, "Order guardrail: trading coupon cost for orders"), width="stretch")
     fr = A["b8_frontier"]
     f = px.line(fr, x="promo_cost_pct_sales", y="value_incl_clv_per_100k", markers=True,
                 labels={"promo_cost_pct_sales": "promo cost % of sales", "value_incl_clv_per_100k": "value incl. CLV per 100k users"})
     f.update_traces(line_color=VIOLET, line_width=3)
-    b.plotly_chart(fig_style(f, 320, "Spend frontier: more coupons ≠ more value"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 320, "Spend frontier: more coupons ≠ more value"), width="stretch")
 
     st.markdown("### ④ A/B test: prove it before rollout")
     b9 = R["blog9_coupons"]
@@ -578,12 +578,12 @@ with tabs[4]:
     f.add_scatter(x=dd["day"], y=dd["p_value_profit"], name="p-value: profit per user", line=dict(color=AQUA, width=3))
     f.add_hline(y=0.05, line_dash="dot", line_color=RED, annotation_text="α = 0.05")
     f.update_layout(xaxis_title="day of test", yaxis_title="p-value", yaxis_type="log")
-    a.plotly_chart(fig_style(f, 320, "Why we wait 4 weeks: p-values move day to day"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 320, "Why we wait 4 weeks: p-values move day to day"), width="stretch")
     f = go.Figure()
     f.add_scatter(x=dd["day"], y=dd["profit_control"], name="Blanket 20% off", line=dict(color=ORANGE, width=3))
     f.add_scatter(x=dd["day"], y=dd["profit_test"], name="Smart targeting", line=dict(color=AQUA, width=3))
     f.update_layout(xaxis_title="day of test", yaxis_title="cumulative profit per user ($)")
-    b.plotly_chart(fig_style(f, 320, "Short-term profit per user over the test"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 320, "Short-term profit per user over the test"), width="stretch")
     st.caption(f"Sample size to detect a 1 pp conversion change at α = 0.05 and power = 80%: "
                f"{b9['required_n_per_group_1pp']:,} per group. Smart-group offer mix: "
                + ", ".join(f"{k_} {v_:.0f}%" for k_, v_ in b9["test_offer_mix"].items()))
@@ -599,7 +599,7 @@ with tabs[5]:
     f = go.Figure(go.Bar(x=comp["accuracy_pct"], y=comp["model"], orientation="h", marker_color=colr,
                          text=comp["accuracy_pct"].round(1).astype(str) + "%"))
     f.update_layout(xaxis_title="forecast accuracy = 100 − WAPE (%)", xaxis_range=[40, 100])
-    a.plotly_chart(fig_style(f, 330, "One-week-ahead accuracy on the last 26 weeks"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 330, "One-week-ahead accuracy on the last 26 weeks"), width="stretch")
     fdf = A["b6_forecasts"]
     whs = sorted(fdf["warehouse"].unique())
     wsel = b.selectbox("Warehouse", whs, index=whs.index("EU-Germany") if "EU-Germany" in whs else 0)
@@ -612,17 +612,17 @@ with tabs[5]:
     f.add_scatter(x=fw["week"], y=fw[best_m], name=best_m, line=dict(color=AQUA, width=3))
     f.add_scatter(x=fw["week"], y=fw["8-week moving average (current method)"], name="current method", line=dict(color=ORANGE, width=2, dash="dot"))
     f.update_layout(yaxis_title="units / week")
-    b.plotly_chart(fig_style(f, 330, f"{wsel}: weekly units, actual vs forecast"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 330, f"{wsel}: weekly units, actual vs forecast"), width="stretch")
     lstm = R["blog6"].get("lstm")
     a, b = st.columns(2)
     if lstm:
         a.markdown("**LSTM tuning grid** (validation MAE, normalised)")
-        a.dataframe(pd.DataFrame(lstm["grid"]).round(4), hide_index=True, use_container_width=True)
+        a.dataframe(pd.DataFrame(lstm["grid"]).round(4), hide_index=True, width="stretch")
     hz = pd.DataFrame(R["blog6"]["horizon_accuracy"])
     hz["accuracy_pct"] = 100 - hz["WAPE_pct"]
     f = px.bar(hz, x="horizon_weeks", y="accuracy_pct", text=hz["accuracy_pct"].round(1), color_discrete_sequence=[VIOLET])
     f.update_layout(xaxis_title="weeks ahead", yaxis_title="accuracy %", yaxis_range=[50, 100])
-    b.plotly_chart(fig_style(f, 260, "XGBoost multi-horizon accuracy (used for ordering)"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 260, "XGBoost multi-horizon accuracy (used for ordering)"), width="stretch")
 
     st.markdown("### ② Inventory policy: forecast + safety stock")
     ps = A["p3_policy_summary"]
@@ -643,19 +643,19 @@ with tabs[5]:
     f.add_scatter(x=of["days_on_hand"], y=of["stockout_rate_pct"], mode="markers+text", text=["current"], textposition="top right",
                   name="current method", marker=dict(size=14, color=ORANGE))
     f.update_layout(xaxis_title="days of stock on hand", yaxis_title="stockout %")
-    a.plotly_chart(fig_style(f, 330, "Service-level frontier"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 330, "Service-level frontier"), width="stretch")
     f = go.Figure()
     lab = np.where(fr["policy"] == "Current method", "current", fr["service_level"])
     f.add_bar(x=lab, y=fr["holding_cost"], name="holding cost", marker_color=BLUE)
     f.add_bar(x=lab, y=fr["stockout_cost"], name="stockout cost", marker_color=RED)
     f.update_layout(barmode="stack", xaxis_title="policy / service level", yaxis_title="USD over 26 weeks", xaxis_type="category")
-    b.plotly_chart(fig_style(f, 330, f"Total cost picks the service level (z = {P3['z_chosen']:.2f})"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 330, f"Total cost picks the service level (z = {P3['z_chosen']:.2f})"), width="stretch")
     bw = A["p3_by_warehouse"].copy()
     bw["policy"] = np.where(bw["policy"].str.startswith("Current"), "Current method", "New method")
     f = px.bar(bw, x="warehouse", y="stockout_rate_pct", color="policy", barmode="group",
                color_discrete_map={"Current method": ORANGE, "New method": AQUA}, text=bw["stockout_rate_pct"].round(1))
     f.update_layout(yaxis_title="stockout %", legend_title="")
-    st.plotly_chart(fig_style(f, 320, "Stockouts by warehouse"), use_container_width=True)
+    st.plotly_chart(fig_style(f, 320, "Stockouts by warehouse"), width="stretch")
 
     st.markdown("### ③ ABC-XYZ: which products deserve local stock?")
     abc = A["p3_abc_xyz"]
@@ -663,12 +663,12 @@ with tabs[5]:
     mx = A["p3_abc_matrix"].set_index("ABC").reindex(index=["A", "B", "C"], columns=["X", "Y", "Z"]).fillna(0)
     f = px.imshow(mx.values, x=["X steady", "Y variable", "Z erratic"], y=["A top 80% revenue", "B next 15%", "C last 5%"],
                   text_auto=True, color_continuous_scale=ui.SEQ_BLUE, labels=dict(color="SKUs"))
-    a.plotly_chart(fig_style(f, 330, "SKU count by class"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 330, "SKU count by class"), width="stretch")
     f = px.scatter(abc, x="cv", y="revenue_52w", color="class", log_y=True, hover_data=["sku", "category"],
                    color_discrete_sequence=C, labels={"cv": "coefficient of variation (σ / mean)", "revenue_52w": "revenue, 52 weeks"})
     f.add_vline(x=0.5, line_dash="dot", line_color="white")
     f.add_vline(x=1.0, line_dash="dot", line_color="white")
-    b.plotly_chart(fig_style(f, 330, "Each dot is a SKU"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 330, "Each dot is a SKU"), width="stretch")
     ab_ = P3["abc"]
     finding(f"Stock <b>AX, AY and BX</b> items locally ({ab_['sku_share_local']:.0f}% of SKUs, {ab_['revenue_share_local']:.0f}% of revenue). "
             f"Ship the rest cross-border. Inventory cash falls from {money(ab_['inventory_value_all_local'])} to "
@@ -700,7 +700,7 @@ with tabs[5]:
     f.add_bar(y=ro["warehouse"], x=ro["p_0_20"], name="expected within 0–20 days", orientation="h", marker_color=GREEN)
     f.add_bar(y=ro["warehouse"], x=ro["p_21_49"], name="within 21–49 days", orientation="h", marker_color=YELLOW)
     f.update_layout(barmode="stack", xaxis_title="expected repeat orders")
-    a.plotly_chart(fig_style(f, 300, "Predicted repeat orders by warehouse"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 300, "Predicted repeat orders by warehouse"), width="stretch")
     pl = P3["pilot"]
     with b:
         st.markdown(f"**Design:** {pl['design']}.")
@@ -728,11 +728,11 @@ with tabs[6]:
     f = px.bar(tl, x="reviews", y="topic_detected", color="label", orientation="h",
                color_discrete_map={"Positive": GOOD, "Neutral": "#8a8aa3", "Negative": CRIT})
     f.update_layout(yaxis_title="", legend_title="")
-    a.plotly_chart(fig_style(f, 340, "Sentiment by topic: what customers complain about"), use_container_width=True)
+    a.plotly_chart(fig_style(f, 340, "Sentiment by topic: what customers complain about"), width="stretch")
     rg = clean.groupby("region")["sentiment"].mean().sort_values().reset_index()
     f = px.bar(rg, x="sentiment", y="region", orientation="h", text=rg["sentiment"].round(2), color_discrete_sequence=[BLUE])
     f.update_layout(yaxis_title="", xaxis_title="average sentiment (−1 to +1)")
-    b.plotly_chart(fig_style(f, 340, "Average sentiment by region"), use_container_width=True)
+    b.plotly_chart(fig_style(f, 340, "Average sentiment by region"), width="stretch")
     finding("<b>How this links to the three problems:</b> delivery and stock complaints feed Problem 3, coupon "
             "and notification complaints feed Problem 2 (they are the sleeping dogs), and every negative review "
             "is a churn signal for Problem 1.")
@@ -740,7 +740,7 @@ with tabs[6]:
     ex = pd.concat([rv[rv["spam_flag"]].head(2), rv[rv["rating_text_mismatch"]].head(3),
                     rv[rv["text"].str.contains("🙄")].head(2), rv[rv["text"].str.isupper()].head(2)])
     st.dataframe(ex[["stars", "text", "label", "sentiment", "topic_detected", "spam_flag", "rating_text_mismatch"]].round(2),
-                 hide_index=True, use_container_width=True)
+                 hide_index=True, width="stretch")
 
 # ============================================================ MODEL LAB
 with tabs[7]:
@@ -767,20 +767,20 @@ with tabs[7]:
     lo, hi = min(sub["cv_default"].min(), sub["cv_tuned"].min()), max(sub["cv_default"].max(), sub["cv_tuned"].max())
     pad = (hi - lo) * 0.6 + 1e-3
     f.update_layout(barmode="group", yaxis_range=[lo - pad, hi + pad / 3], yaxis_title="cross-validated score")
-    st.plotly_chart(fig_style(f, 330, f"{sel}: default vs tuned"), use_container_width=True)
+    st.plotly_chart(fig_style(f, 330, f"{sel}: default vs tuned"), width="stretch")
     st.dataframe(sub[["model", "cv_default", "cv_tuned", "gain", "n_iter", "folds", "seconds", "best_params"]].round(4),
-                 hide_index=True, use_container_width=True)
+                 hide_index=True, width="stretch")
     st.markdown("**Forecasting (Blog 6)**")
     st.dataframe(pd.DataFrame(R["blog6"]["tuning"]).assign(best_params=lambda d: d["best_params"].map(
-        lambda p: ", ".join(f"{k_}={v_}" for k_, v_ in p.items()))).round(4), hide_index=True, use_container_width=True)
-    st.dataframe(A["b6_model_comparison"].round(2), hide_index=True, use_container_width=True)
+        lambda p: ", ".join(f"{k_}={v_}" for k_, v_ in p.items()))).round(4), hide_index=True, width="stretch")
+    st.dataframe(A["b6_model_comparison"].round(2), hide_index=True, width="stretch")
     st.markdown("**Held-out test results of the chosen models**")
     tr = pd.DataFrame([
         {"model": "CLV class (Blog 3)", "chosen": R["blog3"]["best_model"], **{k_: round(v_, 3) for k_, v_ in R["blog3"]["metrics"].items()}},
         {"model": "Churn (Blog 4)", "chosen": R["blog4"]["best_model"], **{k_: round(v_, 3) for k_, v_ in R["blog4"]["metrics"].items()}},
         {"model": "Next purchase day (Blog 5)", "chosen": R["blog5"]["best_model"], **{k_: round(v_, 3) for k_, v_ in R["blog5"]["metrics"].items()}},
     ])
-    st.dataframe(tr, hide_index=True, use_container_width=True)
+    st.dataframe(tr, hide_index=True, width="stretch")
     st.caption("Accuracy is limited by randomness built into the simulation (customers behave probabilistically), "
                "which is also true of real customers. Always compare a model with its baseline, not with 100%.")
 
