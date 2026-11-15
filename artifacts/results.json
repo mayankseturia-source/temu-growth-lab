@@ -1,0 +1,1038 @@
+{
+ "generated_at": "2026-11-15T12:32:10.462041+00:00",
+ "seed": 42,
+ "data": {
+  "customers": 40000,
+  "orders": 90676,
+  "coupon_experiment_users": 80000,
+  "warehouse_series": 60,
+  "weeks": 156,
+  "skus": 240,
+  "reviews": 4000,
+  "order_period": [
+   "2025-01-01",
+   "2026-10-31"
+  ]
+ },
+ "blog1": {
+  "repeat90_pct": 40.10952236081533,
+  "promo_cost_pct": 15.028184022562302,
+  "coupon_order_share_pct": 55.92108165335922,
+  "delay_rate_pct": 11.856500066169659,
+  "aov": 24.475464400723453,
+  "last_month": {
+   "month": "2026-10",
+   "revenue": 136989.43,
+   "gross_sales": 160790.76,
+   "promo_cost": 23801.33,
+   "orders": 6556,
+   "active_customers": 6014,
+   "revenue_growth_pct": 4.983997901384218,
+   "revenue_per_order": 20.895276082977425,
+   "orders_per_customer": 1.0901230462254738,
+   "promo_cost_pct": 14.802672740647536,
+   "new_customers": 2508,
+   "existing_customers": 3506,
+   "new_existing_ratio": 0.7153451226468911,
+   "repeat_buyers": 3625,
+   "retention_rate_pct": 31.893572909467867
+  },
+  "annual_gross_sales_run_rate": 1870015.44
+ },
+ "blog3": {
+  "metrics": {
+   "accuracy": 0.6787854574510588,
+   "f1_macro": 0.4065310348806794,
+   "f1_weighted": 0.6199186454992732,
+   "balanced_accuracy": 0.40315416953762656,
+   "majority_baseline_f1_macro": 0.27180943366461585,
+   "majority_baseline_balanced_accuracy": 0.3333333333333333,
+   "majority_baseline_accuracy": 0.6883739512584898
+  },
+  "confusion": [
+   [
+    1593,
+    110,
+    20
+   ],
+   [
+    481,
+    76,
+    30
+   ],
+   [
+    127,
+    36,
+    30
+   ]
+  ],
+  "labels": [
+   "Low CLV",
+   "Mid CLV",
+   "High CLV"
+  ],
+  "tuning": [
+   {
+    "model": "Logistic Regression",
+    "cv_default": 0.3817870311456773,
+    "cv_tuned": 0.3816829860622613,
+    "gain": -0.00010404508341599339,
+    "best_params": {
+     "C": 0.98467
+    },
+    "n_iter": 12,
+    "folds": 4,
+    "seconds": 2.1
+   },
+   {
+    "model": "Random Forest",
+    "cv_default": 0.3948530492417513,
+    "cv_tuned": 0.3991812153904288,
+    "gain": 0.004328166148677481,
+    "best_params": {
+     "max_depth": 18,
+     "max_features": 0.63287,
+     "min_samples_leaf": 3,
+     "n_estimators": 284
+    },
+    "n_iter": 12,
+    "folds": 4,
+    "seconds": 105.0
+   },
+   {
+    "model": "HistGradientBoosting",
+    "cv_default": 0.39744253391181855,
+    "cv_tuned": 0.40772129127054657,
+    "gain": 0.010278757358728019,
+    "best_params": {
+     "l2_regularization": 2.1423,
+     "learning_rate": 0.10186,
+     "max_iter": 251,
+     "max_leaf_nodes": 10,
+     "min_samples_leaf": 31
+    },
+    "n_iter": 12,
+    "folds": 4,
+    "seconds": 111.1
+   },
+   {
+    "model": "XGBoost",
+    "cv_default": 0.4092945401666004,
+    "cv_tuned": 0.4128471796336918,
+    "gain": 0.0035526394670913897,
+    "best_params": {
+     "colsample_bytree": 0.92114,
+     "gamma": 0.89951,
+     "learning_rate": 0.03834,
+     "max_depth": 5,
+     "min_child_weight": 8,
+     "n_estimators": 611,
+     "reg_lambda": 0.28246,
+     "subsample": 0.61809
+    },
+    "n_iter": 12,
+    "folds": 4,
+    "seconds": 62.4
+   }
+  ],
+  "best_model": "XGBoost",
+  "importance": [
+   {
+    "feature": "w3_frequency",
+    "importance": 0.1733361780643463
+   },
+   {
+    "feature": "rfm_score",
+    "importance": 0.05691917985677719
+   },
+   {
+    "feature": "gap_mean",
+    "importance": 0.031036123633384705
+   },
+   {
+    "feature": "w3_monetary",
+    "importance": 0.025210395455360413
+   },
+   {
+    "feature": "last_order_delayed",
+    "importance": 0.025127189233899117
+   },
+   {
+    "feature": "recency",
+    "importance": 0.02478245086967945
+   },
+   {
+    "feature": "w3_recency",
+    "importance": 0.023237818852066994
+   },
+   {
+    "feature": "frequency",
+    "importance": 0.023214738816022873
+   },
+   {
+    "feature": "day_diff_1",
+    "importance": 0.02311096154153347
+   },
+   {
+    "feature": "n_categories",
+    "importance": 0.022092143073678017
+   },
+   {
+    "feature": "gap_std",
+    "importance": 0.021427515894174576
+   },
+   {
+    "feature": "region_Saudi Arabia",
+    "importance": 0.02114414982497692
+   }
+  ],
+  "n_customers": 10010,
+  "pred_dist": {
+   "Low CLV": 2201,
+   "Mid CLV": 222,
+   "High CLV": 80
+  }
+ },
+ "blog4": {
+  "metrics": {
+   "accuracy": 0.7646507266760432,
+   "precision": 0.8119039789542913,
+   "recall": 0.8510858324715616,
+   "f1": 0.8310333221137665,
+   "roc_auc": 0.829133063879703,
+   "churn_rate": 0.6799695264885138,
+   "majority_baseline_accuracy": 0.6799695264885138
+  },
+  "confusion": [
+   [
+    793,
+    572
+   ],
+   [
+    432,
+    2469
+   ]
+  ],
+  "tuning": [
+   {
+    "model": "Logistic Regression",
+    "cv_default": 0.8260302142181294,
+    "cv_tuned": 0.8263733278471849,
+    "gain": 0.0003431136290554804,
+    "best_params": {
+     "C": 0.00603
+    },
+    "n_iter": 15,
+    "folds": 4,
+    "seconds": 1.8
+   },
+   {
+    "model": "Random Forest",
+    "cv_default": 0.8221151871387824,
+    "cv_tuned": 0.833389824382996,
+    "gain": 0.011274637244213626,
+    "best_params": {
+     "max_depth": 5,
+     "max_features": 0.67896,
+     "min_samples_leaf": 7,
+     "n_estimators": 413
+    },
+    "n_iter": 15,
+    "folds": 4,
+    "seconds": 288.5
+   },
+   {
+    "model": "HistGradientBoosting",
+    "cv_default": 0.8247175452933271,
+    "cv_tuned": 0.829447903842681,
+    "gain": 0.004730358549353886,
+    "best_params": {
+     "l2_regularization": 3.52048,
+     "learning_rate": 0.04031,
+     "max_iter": 459,
+     "max_leaf_nodes": 11,
+     "min_samples_leaf": 11
+    },
+    "n_iter": 15,
+    "folds": 4,
+    "seconds": 83.6
+   },
+   {
+    "model": "XGBoost",
+    "cv_default": 0.8070598087994292,
+    "cv_tuned": 0.8327702970163011,
+    "gain": 0.02571048821687194,
+    "best_params": {
+     "colsample_bytree": 0.80377,
+     "gamma": 0.34105,
+     "learning_rate": 0.01248,
+     "max_depth": 5,
+     "min_child_weight": 9,
+     "n_estimators": 465,
+     "reg_lambda": 1.97762,
+     "subsample": 0.75417
+    },
+    "n_iter": 15,
+    "folds": 4,
+    "seconds": 39.5
+   }
+  ],
+  "best_model": "Random Forest",
+  "importance": [
+   {
+    "feature": "recency",
+    "importance": 0.627198513107192
+   },
+   {
+    "feature": "rfm_score",
+    "importance": 0.09471416047749495
+   },
+   {
+    "feature": "gap_mean",
+    "importance": 0.08109543575029625
+   },
+   {
+    "feature": "day_diff_1",
+    "importance": 0.06243231688079635
+   },
+   {
+    "feature": "frequency",
+    "importance": 0.04819794675277011
+   },
+   {
+    "feature": "tenure_days",
+    "importance": 0.030163607921806786
+   },
+   {
+    "feature": "cac_usd",
+    "importance": 0.011887276385636412
+   },
+   {
+    "feature": "monetary",
+    "importance": 0.006307148639536862
+   },
+   {
+    "feature": "avg_order_value",
+    "importance": 0.005285468726887167
+   },
+   {
+    "feature": "avg_discount_pct",
+    "importance": 0.0049427793048316335
+   },
+   {
+    "feature": "day_diff_2",
+    "importance": 0.00486555932267307
+   },
+   {
+    "feature": "last_order_delayed",
+    "importance": 0.00408553656155443
+   }
+  ],
+  "n_customers": 17064
+ },
+ "blog5": {
+  "metrics": {
+   "accuracy": 0.7873684210526316,
+   "f1_macro": 0.47585977129526763,
+   "f1_weighted": 0.7634343179873633,
+   "balanced_accuracy": 0.4521831429440126,
+   "majority_baseline_f1_macro": 0.2933857236411264,
+   "majority_baseline_balanced_accuracy": 0.3333333333333333,
+   "majority_baseline_accuracy": 0.7859649122807018
+  },
+  "confusion": [
+   [
+    1046,
+    69,
+    5
+   ],
+   [
+    176,
+    68,
+    9
+   ],
+   [
+    13,
+    31,
+    8
+   ]
+  ],
+  "labels": [
+   "50+ days / none",
+   "21-49 days",
+   "0-20 days"
+  ],
+  "tuning": [
+   {
+    "model": "Logistic Regression",
+    "cv_default": 0.5272145018550926,
+    "cv_tuned": 0.5308002742169868,
+    "gain": 0.0035857723618942794,
+    "best_params": {
+     "C": 21.42302
+    },
+    "n_iter": 12,
+    "folds": 4,
+    "seconds": 1.8
+   },
+   {
+    "model": "Random Forest",
+    "cv_default": 0.5308611591398102,
+    "cv_tuned": 0.5565863575348045,
+    "gain": 0.02572519839499421,
+    "best_params": {
+     "max_depth": 18,
+     "max_features": 0.63287,
+     "min_samples_leaf": 3,
+     "n_estimators": 284
+    },
+    "n_iter": 12,
+    "folds": 4,
+    "seconds": 60.5
+   },
+   {
+    "model": "HistGradientBoosting",
+    "cv_default": 0.5309940140273425,
+    "cv_tuned": 0.5548790815338593,
+    "gain": 0.023885067506516866,
+    "best_params": {
+     "l2_regularization": 0.25208,
+     "learning_rate": 0.06774,
+     "max_iter": 373,
+     "max_leaf_nodes": 11,
+     "min_samples_leaf": 98
+    },
+    "n_iter": 12,
+    "folds": 4,
+    "seconds": 78.3
+   },
+   {
+    "model": "XGBoost",
+    "cv_default": 0.5405345244396053,
+    "cv_tuned": 0.5687254693621675,
+    "gain": 0.028190944922562244,
+    "best_params": {
+     "colsample_bytree": 0.80377,
+     "gamma": 0.34105,
+     "learning_rate": 0.01248,
+     "max_depth": 5,
+     "min_child_weight": 9,
+     "n_estimators": 465,
+     "reg_lambda": 1.97762,
+     "subsample": 0.75417
+    },
+    "n_iter": 12,
+    "folds": 4,
+    "seconds": 35.6
+   }
+  ],
+  "best_model": "XGBoost",
+  "importance": [
+   {
+    "feature": "recency",
+    "importance": 0.19125564396381378
+   },
+   {
+    "feature": "rfm_score",
+    "importance": 0.08558885753154755
+   },
+   {
+    "feature": "gap_mean",
+    "importance": 0.046841491013765335
+   },
+   {
+    "feature": "frequency",
+    "importance": 0.030434777960181236
+   },
+   {
+    "feature": "tenure_days",
+    "importance": 0.028735807165503502
+   },
+   {
+    "feature": "channel_Meta",
+    "importance": 0.026496248319745064
+   },
+   {
+    "feature": "monetary",
+    "importance": 0.024969466030597687
+   },
+   {
+    "feature": "channel_TV / Big events",
+    "importance": 0.02292104810476303
+   },
+   {
+    "feature": "gap_std",
+    "importance": 0.022793222218751907
+   },
+   {
+    "feature": "channel_Referral game",
+    "importance": 0.02267666719853878
+   },
+   {
+    "feature": "day_diff_1",
+    "importance": 0.022011736407876015
+   },
+   {
+    "feature": "region_UAE",
+    "importance": 0.021750323474407196
+   }
+  ],
+  "class_dist": {
+   "50+ days / none": 4477,
+   "21-49 days": 1011,
+   "0-20 days": 210
+  },
+  "n_customers": 5698
+ },
+ "problem1": {
+  "segment_shares": {
+   "Low value": 0.35794655414908577,
+   "Mid value": 0.30895452414439756,
+   "High value, low risk (no action)": 0.21894045944678855,
+   "High value, high risk": 0.11415846225972809
+  },
+  "effects": {
+   "High value, high risk": 0.16,
+   "Mid value": 0.11,
+   "Low value": 0.03
+  },
+  "targeting_precision": 0.8119039789542913,
+  "baseline_repeat90": 40.10952236081533,
+  "projected_repeat90": 45.223603893511246,
+  "lift_pp": 5.114081532695913,
+  "ab_test": {
+   "p_control": 0.4007222222222222,
+   "p_test": 0.4415,
+   "diff": 0.0407777777777778,
+   "rel_lift": 0.10176070982947462,
+   "z": 4.984517120360147,
+   "p_value": 6.211674592471184e-07,
+   "ci_low": 0.024577799508261985,
+   "ci_high": 0.05697775604729362,
+   "n_control": 36000,
+   "n_test": 4000,
+   "required_n_per_group_for_2pp": 9500
+  }
+ },
+ "blog8": {
+  "class_transform_tuning": [
+   {
+    "model": "HistGradientBoosting",
+    "cv_default": -1.113161792789806,
+    "cv_tuned": -1.107321661145433,
+    "gain": 0.0058401316443730256,
+    "best_params": {
+     "l2_regularization": 0.25208,
+     "learning_rate": 0.06774,
+     "max_iter": 373,
+     "max_leaf_nodes": 11,
+     "min_samples_leaf": 98
+    },
+    "n_iter": 10,
+    "folds": 3,
+    "seconds": 13.9
+   },
+   {
+    "model": "XGBoost",
+    "cv_default": -1.1734465758005779,
+    "cv_tuned": -1.1080692609151204,
+    "gain": 0.0653773148854575,
+    "best_params": {
+     "colsample_bytree": 0.80377,
+     "gamma": 0.34105,
+     "learning_rate": 0.01248,
+     "max_depth": 5,
+     "min_child_weight": 9,
+     "n_estimators": 465,
+     "reg_lambda": 1.97762,
+     "subsample": 0.75417
+    },
+    "n_iter": 10,
+    "folds": 3,
+    "seconds": 94.6
+   }
+  ],
+  "class_transform_model": "HistGradientBoosting",
+  "arm_tuning": {
+   "No offer": [
+    {
+     "model": "HistGradientBoosting",
+     "cv_default": -0.3803410794580355,
+     "cv_tuned": -0.37314560298461813,
+     "gain": 0.007195476473417395,
+     "best_params": {
+      "l2_regularization": 2.1423,
+      "learning_rate": 0.10186,
+      "max_iter": 251,
+      "max_leaf_nodes": 10,
+      "min_samples_leaf": 31
+     },
+     "n_iter": 10,
+     "folds": 3,
+     "seconds": 24.1
+    },
+    {
+     "model": "XGBoost",
+     "cv_default": -0.4230400025844574,
+     "cv_tuned": -0.3655771017074585,
+     "gain": 0.0574629008769989,
+     "best_params": {
+      "colsample_bytree": 0.80377,
+      "gamma": 0.34105,
+      "learning_rate": 0.01248,
+      "max_depth": 5,
+      "min_child_weight": 9,
+      "n_estimators": 465,
+      "reg_lambda": 1.97762,
+      "subsample": 0.75417
+     },
+     "n_iter": 10,
+     "folds": 3,
+     "seconds": 17.3
+    }
+   ],
+   "20% off": [
+    {
+     "model": "HistGradientBoosting",
+     "cv_default": -0.473237747435828,
+     "cv_tuned": -0.4683696757418691,
+     "gain": 0.00486807169395892,
+     "best_params": {
+      "l2_regularization": 2.1423,
+      "learning_rate": 0.10186,
+      "max_iter": 251,
+      "max_leaf_nodes": 10,
+      "min_samples_leaf": 31
+     },
+     "n_iter": 10,
+     "folds": 3,
+     "seconds": 24.1
+    },
+    {
+     "model": "XGBoost",
+     "cv_default": -0.5226157506306967,
+     "cv_tuned": -0.46045369903246564,
+     "gain": 0.062162051598231016,
+     "best_params": {
+      "colsample_bytree": 0.80377,
+      "gamma": 0.34105,
+      "learning_rate": 0.01248,
+      "max_depth": 5,
+      "min_child_weight": 9,
+      "n_estimators": 465,
+      "reg_lambda": 1.97762,
+      "subsample": 0.75417
+     },
+     "n_iter": 10,
+     "folds": 3,
+     "seconds": 17.7
+    }
+   ],
+   "Buy-one-get-one": [
+    {
+     "model": "HistGradientBoosting",
+     "cv_default": -0.39110038847322803,
+     "cv_tuned": -0.3857137560425932,
+     "gain": 0.005386632430634808,
+     "best_params": {
+      "l2_regularization": 2.1423,
+      "learning_rate": 0.10186,
+      "max_iter": 251,
+      "max_leaf_nodes": 10,
+      "min_samples_leaf": 31
+     },
+     "n_iter": 10,
+     "folds": 3,
+     "seconds": 24.8
+    },
+    {
+     "model": "XGBoost",
+     "cv_default": -0.4376931091149648,
+     "cv_tuned": -0.37790824969609577,
+     "gain": 0.05978485941886902,
+     "best_params": {
+      "colsample_bytree": 0.80377,
+      "gamma": 0.34105,
+      "learning_rate": 0.01248,
+      "max_depth": 5,
+      "min_child_weight": 9,
+      "n_estimators": 465,
+      "reg_lambda": 1.97762,
+      "subsample": 0.75417
+     },
+     "n_iter": 10,
+     "folds": 3,
+     "seconds": 16.5
+    }
+   ],
+   "Free shipping": [
+    {
+     "model": "HistGradientBoosting",
+     "cv_default": -0.3888403591658107,
+     "cv_tuned": -0.38410294228279257,
+     "gain": 0.004737416883018153,
+     "best_params": {
+      "l2_regularization": 2.1423,
+      "learning_rate": 0.10186,
+      "max_iter": 251,
+      "max_leaf_nodes": 10,
+      "min_samples_leaf": 31
+     },
+     "n_iter": 10,
+     "folds": 3,
+     "seconds": 24.9
+    },
+    {
+     "model": "XGBoost",
+     "cv_default": -0.43004201849301654,
+     "cv_tuned": -0.3740659753481547,
+     "gain": 0.05597604314486182,
+     "best_params": {
+      "colsample_bytree": 0.80377,
+      "gamma": 0.34105,
+      "learning_rate": 0.01248,
+      "max_depth": 5,
+      "min_child_weight": 9,
+      "n_estimators": 465,
+      "reg_lambda": 1.97762,
+      "subsample": 0.75417
+     },
+     "n_iter": 10,
+     "folds": 3,
+     "seconds": 18.1
+    }
+   ]
+  },
+  "arm_test": [
+   {
+    "offer": "No offer",
+    "model": "XGBoost",
+    "auc": 0.6870043139206902,
+    "log_loss": 0.36214908957481384,
+    "mean_pred": 0.13112738728523254,
+    "actual": 0.12971698113207547
+   },
+   {
+    "offer": "20% off",
+    "model": "XGBoost",
+    "auc": 0.6966316896778435,
+    "log_loss": 0.4532232880592346,
+    "mean_pred": 0.19053684175014496,
+    "actual": 0.1935483870967742
+   },
+   {
+    "offer": "Buy-one-get-one",
+    "model": "XGBoost",
+    "auc": 0.6883120120008198,
+    "log_loss": 0.37122347950935364,
+    "mean_pred": 0.13681623339653015,
+    "actual": 0.1365594961882665
+   },
+   {
+    "offer": "Free shipping",
+    "model": "XGBoost",
+    "auc": 0.6959990981476427,
+    "log_loss": 0.3694179356098175,
+    "mean_pred": 0.13676320016384125,
+    "actual": 0.1361737677527151
+   }
+  ],
+  "corr_true_uplift": {
+   "class transformation (Blog 8)": 0.6176153646110881,
+   "T-learner (per-offer models)": 0.6873628148254123
+  },
+  "segment_accuracy": 0.61825,
+  "segment_confusion": [
+   [
+    8149,
+    563,
+    926,
+    249
+   ],
+   [
+    1264,
+    885,
+    153,
+    752
+   ],
+   [
+    2145,
+    269,
+    4915,
+    1614
+   ],
+   [
+    276,
+    241,
+    710,
+    889
+   ]
+  ],
+  "segment_f1_macro": 0.5120229409462251,
+  "auuc": {
+   "class transformation (Blog 8)": 0.023325592081108217,
+   "T-learner (per-offer models)": 0.02337493133643842,
+   "Random targeting": 0.01689357273703103
+  }
+ },
+ "blog9_coupons": {
+  "n_control": 19998,
+  "n_test": 20002,
+  "conversion": {
+   "p_control": 0.18901890189018902,
+   "p_test": 0.18388161183881613,
+   "diff": -0.005137290051372895,
+   "rel_lift": -0.027178710700358506,
+   "z": -1.319048504772093,
+   "p_value": 0.18715289711827765,
+   "ci_low": -0.012770732010503473,
+   "ci_high": 0.0024961519077576827
+  },
+  "profit_per_user": {
+   "mean_control": 0.26462232657832885,
+   "mean_test": 0.5320296879870003,
+   "diff": 0.2674073614086715,
+   "t": 18.968494143411963,
+   "p_value": 1.1810808253992047e-79,
+   "ci_low": 0.2397763631650376,
+   "ci_high": 0.2950383596523054
+  },
+  "value_incl_clv_per_user": {
+   "mean_control": 1.4813574917013894,
+   "mean_test": 1.7156955600582282,
+   "diff": 0.2343380683568388,
+   "t": 6.6415776473872015,
+   "p_value": 3.145341513911317e-11,
+   "ci_low": 0.16518241914748358,
+   "ci_high": 0.30349371756619403
+  },
+  "promo_cost_per_user": {
+   "mean_control": 1.0584893063133156,
+   "mean_test": 0.7393893813062965,
+   "diff": -0.3190999250070191,
+   "t": -14.334826332287264,
+   "p_value": 1.7499290631421719e-46,
+   "ci_low": -0.3627304398466058,
+   "ci_high": -0.2754694101674324
+  },
+  "revenue_per_user": {
+   "mean_control": 5.292446531566578,
+   "mean_test": 5.085676277173188,
+   "diff": -0.20677025439339047,
+   "t": -1.703764527479481,
+   "p_value": 0.0884328583518189,
+   "ci_low": -0.44463745498043056,
+   "ci_high": 0.03109694619364961
+  },
+  "promo_pct_sales_control": 20.0,
+  "promo_pct_sales_test": 14.53866390641123,
+  "rev_per_coupon_dollar_control": 5.0,
+  "rev_per_coupon_dollar_test": 6.878211137125345,
+  "required_n_per_group_1pp": 24547,
+  "strata_balance": [
+   {
+    "tier": "Q1",
+    "Control (blanket)": 25.0,
+    "Test (targeted)": 25.0
+   },
+   {
+    "tier": "Q2",
+    "Control (blanket)": 25.0,
+    "Test (targeted)": 25.0
+   },
+   {
+    "tier": "Q3",
+    "Control (blanket)": 25.0,
+    "Test (targeted)": 25.0
+   },
+   {
+    "tier": "Q4",
+    "Control (blanket)": 25.0,
+    "Test (targeted)": 25.0
+   }
+  ],
+  "test_offer_mix": {
+   "20% off": 61.8,
+   "No offer": 23.4,
+   "Free shipping": 12.1,
+   "Buy-one-get-one": 2.7
+  }
+ },
+ "problem2": {
+  "baseline_promo_pct": 15.028184022562302,
+  "projected_promo_pct": 10.671745326155477,
+  "promo_cost_cut_pct": 30.487030353952537,
+  "orders_change_pct": -2.4008878341301942,
+  "profit_change_per_100k": 28311.875606526304,
+  "value_change_per_100k": 25397.616661021777,
+  "future_value_usd": 6.437108421198668,
+  "annual_saving_usd_on_this_business": 85677.50676644055,
+  "recommended_policy": "Cost-optimised + order guardrail",
+  "guardrail_lambda_usd_per_order": 28.0
+ },
+ "blog6": {
+  "tuning": [
+   {
+    "model": "XGBoost (direct multi-horizon)",
+    "cv_default": 0.1808388235763086,
+    "cv_tuned": 0.17031501533668703,
+    "metric": "MAE (normalised units)",
+    "gain": 0.010523808239621568,
+    "best_params": {
+     "colsample_bytree": 0.5115,
+     "learning_rate": 0.0482,
+     "max_depth": 4,
+     "min_child_weight": 16,
+     "n_estimators": 389,
+     "reg_lambda": 0.1677,
+     "subsample": 0.8474
+    },
+    "n_iter": 14,
+    "folds": 4,
+    "seconds": 44.6
+   }
+  ],
+  "lstm": {
+   "grid": [
+    {
+     "window_weeks": 12,
+     "lstm_units": 32,
+     "learning_rate": 0.001,
+     "val_MAE": 0.1671231985092163,
+     "epochs_run": 60
+    },
+    {
+     "window_weeks": 12,
+     "lstm_units": 64,
+     "learning_rate": 0.001,
+     "val_MAE": 0.16664861142635345,
+     "epochs_run": 59
+    },
+    {
+     "window_weeks": 8,
+     "lstm_units": 32,
+     "learning_rate": 0.003,
+     "val_MAE": 0.16458232700824738,
+     "epochs_run": 57
+    },
+    {
+     "window_weeks": 16,
+     "lstm_units": 64,
+     "learning_rate": 0.001,
+     "val_MAE": 0.1669696420431137,
+     "epochs_run": 44
+    }
+   ],
+   "best": {
+    "window_weeks": 8,
+    "lstm_units": 32,
+    "learning_rate": 0.003,
+    "val_MAE": 0.16458232700824738,
+    "epochs_run": 57
+   },
+   "seconds": 62.5
+  },
+  "horizon_accuracy": [
+   {
+    "horizon_weeks": 1,
+    "WAPE_pct": 11.864886994299953
+   },
+   {
+    "horizon_weeks": 2,
+    "WAPE_pct": 13.231531503310185
+   },
+   {
+    "horizon_weeks": 3,
+    "WAPE_pct": 15.093709556794291
+   }
+  ],
+  "importance": [
+   {
+    "feature": "black_friday_target",
+    "importance": 0.3740348517894745
+   },
+   {
+    "feature": "christmas_target",
+    "importance": 0.08000065386295319
+   },
+   {
+    "feature": "christmas_now",
+    "importance": 0.07571765780448914
+   },
+   {
+    "feature": "black_friday_now",
+    "importance": 0.07401768863201141
+   },
+   {
+    "feature": "week_of_year",
+    "importance": 0.067406065762043
+   },
+   {
+    "feature": "last_year_seasonal_ratio",
+    "importance": 0.03751210495829582
+   },
+   {
+    "feature": "summer_sale_target",
+    "importance": 0.03326650708913803
+   },
+   {
+    "feature": "singles_day_target",
+    "importance": 0.03040923736989498
+   },
+   {
+    "feature": "ramadan_now",
+    "importance": 0.021394476294517517
+   },
+   {
+    "feature": "ramadan_target",
+    "importance": 0.0210880097001791
+   },
+   {
+    "feature": "horizon",
+    "importance": 0.0171657782047987
+   },
+   {
+    "feature": "series",
+    "importance": 0.01651550829410553
+   }
+  ]
+ },
+ "problem3": {
+  "z_chosen": 0.52,
+  "hold_cost_week": 0.05,
+  "stockout_cost": 3.0,
+  "total_cost_old": 213489.64375,
+  "total_cost_new": 61368.92332994074,
+  "stockout_old_pct": 11.928308115642801,
+  "stockout_new_pct": 0.8843017381745338,
+  "days_on_hand_old": 3.9376842964508416,
+  "days_on_hand_new": 11.819082586927166,
+  "pilot": {
+   "p_control": 0.117255989857067,
+   "p_test": 0.008800019859001092,
+   "diff": -0.10845596999806592,
+   "rel_lift": -0.9249503597238132,
+   "z": -127.49426907185504,
+   "p_value": 0.0,
+   "ci_low": -0.10999298619930538,
+   "ci_high": -0.10691895379682646,
+   "design": "30 category lines on new method vs 30 on current method, 5 per warehouse each, 26 weeks",
+   "pilot_lines": 30
+  },
+  "abc": {
+   "skus": 240,
+   "inventory_value_all_local": 104317.42308115624,
+   "inventory_value_selective": 39445.40516314219,
+   "revenue_share_local": 57.19556294955805,
+   "sku_share_local": 56.666666666666664,
+   "cash_freed_pct": 62.18713614843161
+  }
+ },
+ "reviews": {
+  "n": 4000,
+  "spam_pct": 5.325,
+  "negative_pct": 34.25,
+  "mismatch_pct": 5.65,
+  "topic_accuracy_pct": 89.04145761816741
+ }
+}
